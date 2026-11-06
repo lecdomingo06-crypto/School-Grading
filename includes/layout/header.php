@@ -11,7 +11,8 @@ $campusName = setting('campus');
 if ($campusName === 'Campus name - configure before issuing reports') $campusName = '';
 $schoolLogo = school_logo();
 $registrationOpen = setting('registration_open', '1') === '1';
-$bodyClass = $homePage ? 'home-page' : ($authPage ? 'auth-page' : 'workspace-page');
+$bodyClass = $homePage ? 'home-page' : ($authPage ? 'auth-page' : ($workspacePage ? 'workspace-page' : 'public-page'));
+if ($currentFile === 'help.php') $bodyClass .= ' help-page';
 $navigationIcon = static function (string $kind): string {
     $paths = [
         'overview' => '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
@@ -40,6 +41,7 @@ $activeNavigation = static function (string $url) use ($currentFile): bool {
         $default = $currentFile === 'student.php' && $key === 'view' ? 'overview' : '';
         if (request_string($_GET, $key) !== (string) $value && !(request_string($_GET, $key) === '' && $value === $default)) return false;
     }
+    if ($currentFile === 'help.php' && !$parameters && request_string($_GET, 'document') !== '') return false;
     return true;
 };
 ?>
@@ -54,6 +56,7 @@ $activeNavigation = static function (string $url) use ($currentFile): bool {
     <link rel="icon" href="assets/student-grade-logo.png" type="image/png">
     <link rel="stylesheet" href="assets/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/workspace.css">
+    <?php if (in_array($currentFile, ['help.php', 'login.php'], true)): ?><link rel="stylesheet" href="assets/css/help.css"><?php endif; ?>
     <?php if ($homePage): ?><link rel="stylesheet" href="assets/css/home.css"><?php endif; ?>
     <script src="assets/js/app.js" defer></script>
 </head>
@@ -74,6 +77,7 @@ $activeNavigation = static function (string $url) use ($currentFile): bool {
         <nav class="public-nav" aria-label="Public navigation">
             <a href="index.php"<?= $homePage ? ' aria-current="page"' : '' ?>>Home</a>
             <a class="public-workflow-link" href="index.php#workflow">How it works</a>
+            <a class="public-help-link" href="help.php"<?=$currentFile==='help.php'?' aria-current="page"':''?>>Help</a>
             <?php if ($user): ?>
                 <a class="btn btn-gold" href="<?= h(dashboard_url($user)) ?>">My dashboard <span aria-hidden="true">↗</span></a>
             <?php else: ?>
@@ -129,6 +133,11 @@ $activeNavigation = static function (string $url) use ($currentFile): bool {
             ];
             $navigationGroups['My account'] = [['profile.php', 'Profile & password', 'profile']];
         }
+        $navigationGroups['Help'] = [
+            ['help.php', 'Help overview', 'book'],
+            ['help.php?document=product', 'Product requirements', 'record'],
+            ['help.php?document=technical', 'Technical requirements', 'settings'],
+        ];
         foreach ($navigationGroups as $groupLabel => $navigationLinks): ?>
             <div class="nav-group"><p class="nav-group-label"><?= h($groupLabel) ?></p>
                 <?php foreach ($navigationLinks as [$url, $label, $icon]): $selected = $activeNavigation($url); ?>

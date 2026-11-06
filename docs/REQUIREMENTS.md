@@ -5,6 +5,8 @@
 | Registration, login/logout, CAPTCHA, bcrypt, lockout | `includes/pages/login.php`, `register.php`, `logout.php` |
 | Pending Faculty/Student requests; administrator account management | `includes/pages/users.php`, `account_service.php`; public registration cannot grant Administrator |
 | Public homepage; role-aware responsive navigation and forms | `index.php`, shared layout, vendored assets; no public academic statistics |
+| Product and Technical Requirement Documents via Help | `help.php`, `includes/help_documents.php`; public and role sidebar links, document contents and print/PDF |
+| Visible demo credentials and populated sample database | Local `demo-data --apply` creates three separate sample role accounts and 100 fictional students/enrollments/grades; login instructions, idempotence, production denial |
 | Verified Student account links; unique ownership; revocation | Migration 003, `account_service.php`; no automatic student-number claims |
 | Student overview, subjects, published grades, academic history | `student.php`, `student_service.php`; Published/reviewed rows only |
 | Student grade cards, summaries, PDF/CSV | Session-bound report tokens; ownership and current publication rechecked on preview/export |

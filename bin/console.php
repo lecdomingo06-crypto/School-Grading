@@ -25,6 +25,15 @@ case 'migrate':
     else echo "Migration complete. Existing identities and grades were preserved; no student accounts were linked automatically.\n";
     break;
 case 'expire-inc':echo 'Converted '.expire_incomplete_grades()." expired INC results.\n";break;
+case 'demo-data':
+    require_once $root.'/includes/demo_service.php';
+    if(!$apply){echo "Adds 100 fictional students, enrollments, grades, and three demo role accounts. Existing records are retained.\nRun demo-data --apply in local mode to load them and select the demo term.\n";break;}
+    if(!in_array(getenv('APP_ENV'),['local','development','test'],true))throw new DomainException('Demo data is disabled outside local/development/test mode.');
+    if(setting('demo_dataset_v1')==='')echo 'Pre-demo recovery backup: '.save_private_backup(database_backup(),'sql').PHP_EOL;
+    $result=seed_demo_dataset();
+    echo ($result['created']?'Created':'Already loaded')." demo dataset: {$result['students']} students, {$result['enrollments']} enrollments, {$result['grades']} grades.\n";
+    echo "Demo credentials are available on the local login page.\n";
+    break;
 case 'backup':
     $scheduled=in_array('--scheduled',$argv,true);$dir=backup_directory();$schedule=setting('backup_schedule','manual');$marker=$dir.'/schedule-last-run.json';$stamp=is_file($marker)?json_decode(file_get_contents($marker),true):[];
     $key=match($schedule){'daily'=>date('Y-m-d'),'weekly'=>date('o-W'),'monthly'=>date('Y-m'),default=>''};
@@ -37,5 +46,5 @@ case 'backup':
 case 'restore-source':
     if(!$apply||!in_array('--allow-source-code',$argv,true))throw new DomainException('Offline source restore requires --apply --allow-source-code and a trusted archive path as the second argument.');
     $file=$argv[2]??'';if(!is_file($file))throw new DomainException('Source backup not found.');$stage=stage_file_backup($file,true);$recovery=apply_staged_files($stage,true);remove_staging_directory($stage['directory']);echo 'Source restored. Recovery copies: '.$recovery.PHP_EOL;break;
-default:echo "Commands:\n install [--demo] (empty DB; ADMIN_INITIAL_PASSWORD required)\n migrate [--apply]\n expire-inc\n backup [--scheduled]\n restore-source ARCHIVE --apply --allow-source-code\nSet DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD and BACKUP_DIR or CRYSTAL_CONFIG_FILE.\n";
+default:echo "Commands:\n install [--demo] (empty DB; ADMIN_INITIAL_PASSWORD required)\n migrate [--apply]\n demo-data [--apply] (100 fictional student datasets; local mode only)\n expire-inc\n backup [--scheduled]\n restore-source ARCHIVE --apply --allow-source-code\nSet DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD and BACKUP_DIR or CRYSTAL_CONFIG_FILE.\n";
 }

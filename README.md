@@ -45,6 +45,7 @@ Follow [MIGRATION.md](docs/MIGRATION.md). The CLI previews pending work with `ph
 | Route | Use |
 |---|---|
 | `index.php` | Public homepage; signed-in users can open their role's dashboard |
+| `help.php` | Help menu, Product Requirement Document, and Technical Requirement Document |
 | `student.php` | Student overview, own subjects, published grades/history, reports, notifications |
 | `academic.php` | Programs, calendars, policies, assignments, enrollment |
 | `students.php`, `subjects.php` | Student and subject records |
@@ -57,6 +58,31 @@ Follow [MIGRATION.md](docs/MIGRATION.md). The CLI previews pending work with `ph
 
 Student grades and GWA use only their own Published, reviewed results. Draft, submitted, approved-but-unpublished, and unreviewed legacy marks are excluded from views, aggregates, notifications, and exports. Student reports are system-generated student copies, not certified university transcripts.
 
+## Help and sample accounts
+
+Open **Help** on the public navigation or in any signed-in role's sidebar. Choose **Product requirements** for the system's purpose, users, features, rules, and acceptance criteria, or **Technical requirements** for architecture, database, access controls, configuration, recovery, and testing. Both are printable webpages.
+
+For local demonstrations, the login page displays these separate sample accounts after the sample-data loader runs:
+
+| Role | Username | Password |
+|---|---|---|
+| Administrator | `demo_admin` | `DemoAdmin2026!` |
+| Faculty | `demo_faculty` | `DemoFaculty2026!` |
+| Student | `demo_student` | `DemoStudent2026!` |
+
+Enter the username/password and answer the arithmetic CAPTCHA. Sample accounts do not require changing their advertised passwords. Normal administrator/faculty/student accounts retain their existing credentials and password-change requirements.
+
+The loader creates **100 fictional students, 100 enrollments, and 100 grade records** in one clearly named Demo class, including 80 Published, 10 Draft, 5 Submitted, and 5 Approved results. It links the demo Student to Demo Student 001 and assigns the demo Faculty to that class. The demo policy is for training only and records no official institutional approval.
+
+On this configured computer the sample data is already loaded. To reproduce it on another installed local database, configure the database and private backup directory, then run:
+
+```powershell
+$env:APP_ENV = 'local'
+php bin/console.php demo-data --apply
+```
+
+Existing records are retained; a private SQL backup is saved before the first load. The loader selects the Demo term and GWA interpretation for demonstration dashboards. Repeating the command does not duplicate records or reset sample passwords. A changed/deactivated sample account is no longer advertised as working. Production mode blocks the loader, hides sample passwords, and denies demo sign-ins/sessions. These public sample credentials are for fictional local demonstrations only.
+
 See [USER_GUIDE.md](docs/USER_GUIDE.md), [GRADING_POLICY.md](docs/GRADING_POLICY.md), [DEPLOYMENT.md](docs/DEPLOYMENT.md), and [REQUIREMENTS.md](docs/REQUIREMENTS.md).
 
 The app's original green/cream/gold academic logo and its generation prompt are documented in [LOGO.md](docs/LOGO.md). Administrators can upload an approved school logo in Settings.
@@ -68,6 +94,7 @@ php -d extension=zip tests/run.php
 php -d extension=zip tests/console.php
 php -d extension=zip tests/student.php
 php -d extension=zip tests/student-backup.php
+php tests/help.php
 ```
 
 The integration runners use uniquely named `crystal_test_*` databases and retain them for review. The original runner writes its database names to `%TEMP%\crystal-test-latest.json`. The Student runner requires a new `crystal_test_student_*` database, automatically starts/stops its own isolated PHP server, and runs `tests/student-http.mjs` through Node.js. It prints the retained fixture/state path. Clear a normal application's `DB_NAME` from the test shell before running Student tests. No normal application database is changed.
@@ -77,6 +104,8 @@ Start the development server using the retained test database and backup directo
 For optional real-browser verification, make Playwright available outside the source tree and set `PLAYWRIGHT_PATH` to its package directory, then run `node tests/browser.cjs`. Chrome is used through `CHROME_PATH` or its default Windows installation path. The browser script expects the HTTP test fixture after `tests/http.mjs` and writes screenshots plus a printable PDF to the temporary QA directory.
 
 For the homepage redesign and all three authenticated roles, `node tests/student-browser.cjs` creates its own disposable Student fixtures and starts/stops its own server. It verifies responsive navigation, keyboard controls, Student views, and printable reports. It uses the same Playwright/Chrome configuration and saves screenshots, a PDF, and its QA summary under `%TEMP%\crystal-browser-qa\artifacts\<test-database>`. The separate Student backup suite verifies actual restore and v2 compatibility using only fresh test databases.
+
+`php tests/help.php` verifies the complete fictional dataset, original-record preservation, repeat-run behavior, demo credentials, Student ownership, and production restrictions. `node tests/help-browser.cjs` creates its own isolated Help fixtures/server and checks the public documents, all three demo roles, mobile layouts, print output, and PHP/browser errors. It uses the same Playwright/Chrome configuration. Optionally set `CRYSTAL_HELP_TEST_STATE` to a retained Help fixture JSON to reuse it.
 
 After review, remove only the specifically named disposable test databases. The test runner never drops databases automatically.
 

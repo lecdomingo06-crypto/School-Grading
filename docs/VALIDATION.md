@@ -1,5 +1,28 @@
 # Validation results
 
+## Help documents and populated demonstration — November 7, 2026
+
+The latest change adds public and role-sidebar Help navigation, printable Product/Technical Requirement Documents, local demo-login instructions, and an explicit sample-data loader. The following checks were run for this change; **500 passed**:
+
+| Suite | Passed |
+|---|---:|
+| `php tests/run.php` — grading, workflow, reports, files, sessions, migration | 77 |
+| `php tests/console.php` — installer and CLI regression | 11 |
+| `php tests/student.php` — Student services | 28 |
+| `php tests/student.php` — Student HTTP access controls and reports | 178 |
+| `php tests/student-backup.php` — Student-bearing and legacy backup restore | 24 |
+| `php tests/help.php` — 100 datasets, preserved records, repeat-run behavior, hashes, demo roles, Student scope, production restrictions | 42 |
+| `node tests/help-browser.cjs` — guest/all-role Help, demo login, desktop/390/320 layouts, active navigation, PDF, no PHP/browser errors | 140 |
+| **Current verification total** | **500** |
+
+All 75 PHP files passed syntax checks. The new browser runner passed `node --check`; Git whitespace checks passed. Its artifacts, including a Product Requirements PDF, are under `%TEMP%\crystal-browser-qa\artifacts\crystal_test_help_20261106175034_39e71d`. Test servers stopped after completion. These tests used only fresh disposable test databases.
+
+The installed `crystal_local` database was then populated through `demo-data --apply`, after a private SQL recovery backup. It now contains **5 accounts, 102 students, and 100 grades**: the original 2 accounts/2 students were retained, and 3 separate demo accounts/100 fictional students were added. Each sample student has an enrollment and grade. The sample class contains 80 Published, 10 Draft, 5 Submitted, and 5 Approved results. The demo Student is linked to Demo Student 001; demo Faculty owns the sample class. The Demo term and training-only GWA policy are selected. No official policy approval was inferred.
+
+The installed login, Product Requirement Document, and Technical Requirement Document each returned HTTP 200 without rendered PHP errors; the login advertised the verified sample credentials. The same dataset is reproducible from source with the documented CLI command. No private configuration, live data dump, or recovery backup is committed to GitHub.
+
+## Previous UI and Student-portal milestone
+
 Verified locally November 6–7, 2026 (Asia/Manila), using PHP 8.2.12, MariaDB 10.4.32, Node.js 24.13.0, and headless Google Chrome through Playwright. PHP Zip is enabled in this computer's XAMPP installation. On other installations, enable Zip before running backup checks; do not load the extension twice.
 
 | Suite | Passed | Coverage |

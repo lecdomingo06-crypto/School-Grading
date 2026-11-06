@@ -2,6 +2,8 @@
 
 Follow this walkthrough in order. It takes one subject and one student through setup, enrollment, grade entry, review, publication, and Student viewing. Reuse existing correct records instead of adding duplicates. Use clearly identified practice records for a demonstration, and use the school's approved information for actual academic work.
 
+For a quick tour, use the demo credentials shown on the login page. The Administrator, Faculty, and Student sample accounts already have a fictional class, 100 student records, enrollment, and grades prepared. The Student demo sees only Demo Student 001. **Help → Product requirements / Technical requirements** opens the printable requirements webpages. Follow the steps below when you want to set up your own records.
+
 **1. Open the website**
 
 Open XAMPP Control Panel. Start Apache and MySQL if they are stopped, then open [http://localhost/Crystal/](http://localhost/Crystal/). Select **Sign in** on the homepage. This computer already has an installed database; no installation or database import is needed to start using it.

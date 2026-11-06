@@ -25,6 +25,7 @@ function current_user():?array{
     $s=$_SESSION['user']??null;if(!$s)return null;
     $linkColumn=student_schema_ready()?'student_id':'NULL AS student_id';
     $u=row("SELECT id,full_name,username,email,role,is_active,registration_status,must_change_password,auth_version,$linkColumn FROM users WHERE id=?",[$s['id']]);
+    if($u&&!demo_login_allowed($u['username'])){unset($_SESSION['user']);return null;}
     if(!$u||!$u['is_active']||$u['registration_status']!=='Approved'||(int)$u['auth_version']!==(int)($s['auth_version']??0)||($_SESSION['epoch']??'')!==setting('session_epoch','1')||time()-(int)($_SESSION['last_activity']??0)>(int)setting('session_timeout','1800')){unset($_SESSION['user']);return null;}return $u;
 }
 function student_schema_ready():bool{
@@ -76,3 +77,4 @@ function visible_student(int $id):array{require_staff();$s=row('SELECT * FROM st
 function policy(int $id):array{return row('SELECT * FROM grading_policies WHERE id=?',[$id])??throw new DomainException('Grading policy not found.');}
 function handle_post(callable $fn,string $url):void{if(($_SERVER['REQUEST_METHOD']??'GET')!=='POST')return;verify_csrf();try{transaction($fn);flash('success','Changes saved.');redirect($url);}catch(DomainException $e){flash('danger',$e->getMessage());}catch(PDOException $e){if($e->getCode()!=='23000')throw $e;flash('danger','This record already exists or is linked to other records. Archive it instead of deleting it.');}}
 require_once __DIR__.'/grade_service.php';
+require_once __DIR__.'/demo_service.php';

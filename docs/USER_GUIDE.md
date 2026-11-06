@@ -2,6 +2,8 @@
 
 New to the system? Start with the [step-by-step tutorial](TUTORIAL.md), which follows one class and student through setup, grade entry, publication, and Student viewing.
 
+For a quick demonstration, open the login page's **Try a demo account** instructions. Choose Administrator, Faculty, or Student, enter the listed credentials, and answer the arithmetic question. The local sample dataset contains 100 fictional students with enrollment and grades. Your normal account remains separate. Open **Help** for the Product and Technical Requirement Documents; select **Print / Save as PDF** to save either document.
+
 ## Homepage and navigation
 
 The homepage explains the system without showing private records or internal statistics. Sign In opens authentication; Request Account appears when registration is enabled. Signed-in users can open their role's dashboard. The responsive navigation highlights the current area and provides profile, notifications, and POST-based sign out.
@@ -19,7 +21,7 @@ The homepage explains the system without showing private records or internal sta
 
 ### Create or approve Student access
 
-Student academic records and login accounts are separate. The demonstration installer creates academic student records but no Student login accounts.
+Student academic records and login accounts are separate. The small legacy `install --demo` fixture creates academic student records without Student logins. The separate `demo-data --apply` loader creates the three advertised role accounts and links only its fictional Demo Student 001; real students still require verified administrator linking.
 
 - To create access, open Users, expand Create an account, choose Student, and select the verified existing academic record. Set a unique temporary password and deliver it privately. The student must change it after signing in.
 - For a pending Student request, verify identity through the school process. Open Verify student link, choose the correct record, and save. Then approve the registration. Approval is refused until the record is linked.

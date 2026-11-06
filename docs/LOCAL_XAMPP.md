@@ -6,6 +6,8 @@ The application database is `crystal_local`, with existing Administrator/Faculty
 
 The local address now opens the public homepage. Sign In takes each approved account to its role's dashboard. To enable student access, sign in as an administrator, open Users, create or review a Student account, and verify its academic-record link. For a public request, save the link before approval. A Student academic record alone is not a login account. See [USER_GUIDE.md](USER_GUIDE.md).
 
+The later sample-data load added 100 clearly named fictional Demo students, 100 enrollments, 100 grades, and three separate sample role accounts. The login page lists their working credentials. The original two accounts and two academic records were retained. The Demo term and training-only policy are selected for demonstration dashboards. Use **Help** to open the Product and Technical Requirement Documents. The sample loader can be repeated without adding duplicates; it does not reset changed account passwords.
+
 Apache serves the current workspace through an alias. There is no separate copy to keep synchronized in `htdocs`; changes made to this project are served directly.
 
 Local machine configuration:
