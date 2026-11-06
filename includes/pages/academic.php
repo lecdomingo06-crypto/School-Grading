@@ -1,0 +1,3 @@
+<?php
+require_once __DIR__.'/../app.php';require_once __DIR__.'/../ui.php';require_admin();page_start('Academic setup','Configure the academic structure before assigning classes and entering grades.');
+?><div class="module-grid"><?php foreach(['courses'=>'Courses / programs','school_years'=>'School years','terms'=>'Terms & deadlines','sections'=>'Sections','subjects'=>'Subjects','grading_policies'=>'Grading policy versions','offerings'=>'Faculty assignments','enrollments'=>'Student enrollment']as $key=>$title):?><a class="panel module-link" href="records.php?entity=<?=h($key)?>"><span class="eyebrow">MANAGE</span><h2><?=h($title)?></h2><span>Open records →</span></a><?php endforeach;?></div><?php page_end();

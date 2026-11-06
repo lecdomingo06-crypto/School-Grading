@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Student Grade DDS emblem</title>
+  <rect width="128" height="128" rx="24" fill="#0d6efd"/>
+  <path d="M25 42 64 24l39 18-39 18z" fill="#fff"/>
+  <path d="M40 53v25c13 11 35 11 48 0V53L64 66z" fill="#dbeafe"/>
+  <path d="M103 44v31" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+  <circle cx="103" cy="82" r="5" fill="#fff"/>
+</svg>

@@ -1,0 +1,49 @@
+:root {
+    --page-bg: #f4f7fb;
+}
+
+body {
+    background: var(--page-bg);
+    color: #233044;
+}
+
+.stat-card {
+    border: 0;
+    border-radius: 0.85rem;
+    box-shadow: 0 0.35rem 1rem rgba(35, 48, 68, 0.08);
+}
+
+.table thead th {
+    white-space: nowrap;
+}
+
+.chart-container {
+    position: relative;
+    min-height: 280px;
+}
+
+.login-panel {
+    max-width: 460px;
+    margin: 7vh auto;
+}
+
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+        font-size: 11pt;
+    }
+
+    .no-print, .navbar, form, .btn, footer {
+        display: none !important;
+    }
+
+    main.container {
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: 0 !important;
+    }
+}
